@@ -1,0 +1,80 @@
+/*
+class Node
+{
+    int data; //data of the node
+    int hd; //horizontal distance of the node
+    Node left, right; //left and right references
+
+    // Constructor of tree node
+    public Node(int key)
+    {
+        data = key;
+        hd = Integer.MAX_VALUE;
+        left = right = null;
+    }
+}
+*/
+class Pair
+{
+    Node node;
+    Integer hd;
+    
+    Pair(Node node,Integer hd)
+    {
+        this.node = node;
+        this.hd= hd;
+    }
+}
+class Solution {
+    public ArrayList<Integer> bottomView(Node root) {
+        
+        
+        // Code here
+        
+        Map<Integer,Integer> hs = new HashMap<>();
+        Queue<Pair> q = new LinkedList<>();
+        
+        q.offer(new Pair(root,0));
+        
+        int max=0;
+        int min=0;
+       // int hd=0;
+        
+        while(!q.isEmpty())
+        {
+            
+            Pair pair = q.poll();
+            int hd = pair.hd;
+            Node node = pair.node;
+            
+             min = Math.min(hd,min);
+            max = Math.max(hd,max);
+            // if(hs.containsKey(pair.hd))
+            // {
+                hs.put(hd,node.data);
+           // }
+           if(node.left!=null)
+           {
+               q.offer(new Pair(node.left,hd-1));
+           }
+           
+             if(node.right!=null)
+           {
+               q.offer(new Pair(node.right,hd+1));
+           }
+            
+        }
+        
+        ArrayList<Integer> result = new ArrayList<>();
+        for(int i=min ; i<=max;i++)
+        {
+            if(hs.containsKey(i))
+            {
+                result.add(hs.get(i));
+            }
+        }
+        return result;
+        
+        
+    }
+}
